@@ -23,13 +23,14 @@ def get_video():
     #对列表进行循环
     for data in info:
         title=data['desc']
-        print(title)
+        nickname=data["nickname"]
+        print(title,nickname)
         videolist=data['video']['play_addr']['url_list']
         for video in videolist:
             print(video)
-            download_video(title,video)
+            download_video(nickname,title,video)
 
-def download_video(title,video):
+def download_video(nickname,title,video):
 
     BASEDIR = os.path.join('D:/抖音/', title)
     # 捕获异常
@@ -37,15 +38,17 @@ def download_video(title,video):
         # 用requests去请求
         response = requests.get(video)
         # 写入文件
-        with open(BASEDIR + title + ".mp4", 'wb')as f:
+        with open(BASEDIR +nickname+ title + ".mp4", 'wb')as f:
             f.write(response.content)
     except Exception as  e:
         return None
 if __name__=="__main__":
-    s=get_video()
-
-    bjtime = str(datetime.utcnow().replace(tzinfo=timezone.utc).astimezone(timezone(timedelta(hours=8)))).split('.')[0]
-    print('北京时间: ' + bjtime)
+    i=0
+    for i in  range(1000):
+        get_video()
+        bjtime = str(datetime.utcnow().replace(tzinfo=timezone.utc).astimezone(timezone(timedelta(hours=8)))).split('.')[0]
+        print('北京时间: ' + bjtime)
+        i+=1
 
 
 
